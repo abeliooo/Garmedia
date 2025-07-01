@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone_number');
+            $table->text('address')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
+            $table->string('profile_picture')->nullable()->default('images/profile/default.png');
+            $table->enum('role', ['admin', 'user'])->default('user');
+            $table->string('admin_id')->nullable()->unique(); // Kolom khusus untuk ID admin
             $table->rememberToken();
             $table->timestamps();
         });

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Book;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -47,7 +47,7 @@ class PageController extends Controller
 
     public function products()
     {
-        $products = Post::latest()->get();
+        $products = Book::latest()->get();
 
         return view('pages.productsPage', ['products' => $products]);
     }

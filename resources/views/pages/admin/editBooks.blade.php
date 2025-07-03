@@ -3,16 +3,22 @@
 @section('content')
 <div class="container-fluid my-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bolder">Kelola Daftar Buku</h1>
-        <a href="#" class="btn btn-primary">Tambah Buku Baru</a>
+        <h1 class="fw-bolder">Edit Book</h1>
+        <div class="d-flex">
+            @include('components.button', [
+                'route' => url()->previous(),
+                'label' => 'Back',
+                'type'  => 'secondary'
+            ])
+        </div>
     </div>
 
     <div class="card">
         <div class="card-body">
             <form action="#" method="GET" class="mb-3">
                 <div class="input-group">
-                    <input type="text" class="form-control" name="search" placeholder="Cari buku berdasarkan judul atau penulis..." value="{{ request('search') }}">
-                    <button class="btn btn-secondary" type="submit">Cari</button>
+                    <input type="text" class="form-control" name="search" placeholder="Search Book Base On Title Or Author..." value="{{ request('search') }}">
+                    <button class="btn btn-secondary" type="submit">Search</button>
                 </div>
             </form>
 
@@ -21,15 +27,15 @@
                     <thead class="table-dark">
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Aksi</th>
+                            <th scope="col">Action</th>
                             <th scope="col">Cover</th>
-                            <th scope="col">Judul</th>
+                            <th scope="col">Title</th>
                             <th scope="col">Author</th>
                             <th scope="col">Format</th>
-                            <th scope="col">Penerbit</th>
+                            <th scope="col">Publisher</th>
                             <th scope="col">ISBN</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Halaman</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Page</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,7 +60,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="10" class="text-center">Tidak ada data buku.</td>
+                                <td colspan="10" class="text-center">There's No Data.</td>
                             </tr>
                         @endforelse
                     </tbody>

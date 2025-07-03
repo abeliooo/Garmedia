@@ -33,7 +33,7 @@ class AuthController extends Controller
             return redirect()->route('landing');
         }
 
-        return redirect()->route('login')->with('error', 'Email atau password salah.');
+        return redirect()->route('login')->with('error', 'Wrong Email Or Password.');
     }
 
     public function register(Request $request)

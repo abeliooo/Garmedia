@@ -8,17 +8,22 @@ class Book extends Model
 {
     protected $fillable = [
         'cover',
-        'judul',
+        'title',
         'author',
         'format',
-        'deskripsi',
-        'penerbit',
+        'description',
+        'publisher',
         'isbn',
-        'bahasa',
-        'panjang',
-        'lebar',
-        'berat',
-        'halaman',
-        'tanggal_terbit',
+        'language',
+        'length',
+        'width',
+        'weight',
+        'page',
+        'release_date',
+        'price',
+    ];
+
+    protected $casts = [
+        'release_date' => 'date',
     ];
 }

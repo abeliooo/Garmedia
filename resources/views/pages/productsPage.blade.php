@@ -10,11 +10,10 @@
 
         @if ($products->isEmpty())
             <div class="text-center py-5">
-                {{-- Cek lagi apakah ini konteks pencarian atau bukan --}}
                 @if (isset($searchTerm) && $searchTerm != '')
-                    <p class="text-muted fs-4">Oops, tidak ada produk yang cocok dengan pencarian "{{ $searchTerm }}"</p>
+                    <p class="text-muted fs-4">There's No Product Related To Your Search"{{ $searchTerm }}"</p>
                 @else
-                    <p class="text-muted fs-4">Saat ini belum ada produk yang tersedia.</p>
+                    <p class="text-muted fs-4">Product Is Not Available</p>
                 @endif
             </div>
         @else

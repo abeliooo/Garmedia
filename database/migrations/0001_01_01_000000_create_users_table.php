@@ -22,7 +22,7 @@ return new class extends Migration
             $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('profile_picture')->nullable()->default('images/profile/default.png');
             $table->enum('role', ['admin', 'user'])->default('user');
-            $table->string('admin_id')->nullable()->unique(); // Kolom khusus untuk ID admin
+            $table->string('admin_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

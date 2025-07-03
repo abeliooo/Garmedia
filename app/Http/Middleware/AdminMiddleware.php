@@ -18,11 +18,11 @@ class AdminMiddleware
     public function handle($request, Closure $next)
     {
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+            return redirect()->route('login')->with('error', 'Please Login First.');
         }
 
         if (Auth::user()->role !== 'admin') {
-            return redirect()->route('login')->with('error', 'Anda tidak memiliki akses admin.');
+            return redirect()->route('login')->with('error', 'You Don\'t Have Admin Role.');
         }
 
         return $next($request);

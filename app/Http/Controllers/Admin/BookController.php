@@ -14,40 +14,39 @@ class BookController extends Controller
 
         $books = Book::query()
             ->when($search, function ($query, $search) {
-                return $query->where('judul', 'like', "%{$search}%")
+                return $query->where('title', 'like', "%{$search}%")
                     ->orWhere('author', 'like', "%{$search}%");
             })
             ->latest()
-            ->paginate(10); // Menampilkan 10 buku per halaman
+            ->paginate(10);
 
         return view('pages.admin.books', compact('books'));
     }
 
     public function create()
     {
-        return view('pages.admin.books.create');
+        return view('pages.admin.bookForm');
     }
 
     public function store(Request $request)
     {
-        // Validasi data yang masuk
         $validatedData = $request->validate([
-            'judul' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'content' => 'required|string',
-            'penerbit' => 'required|string|max:255',
+            'description' => 'required|string',
+            'publisher' => 'required|string|max:255',
             'isbn' => 'required|string|unique:books,isbn',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'format' => 'required|in:soft cover,hard cover',
-            'bahasa' => 'required|string|max:100',
-            'tanggal_terbit' => 'required|date',
-            'panjang' => 'required|numeric',
-            'lebar' => 'required|numeric',
-            'berat' => 'required|integer',
-            'halaman' => 'required|integer',
+            'language' => 'required|string|max:100',
+            'release_date' => 'required|date',
+            'length' => 'required|numeric',
+            'width' => 'required|numeric',
+            'weight' => 'required|integer',
+            'page' => 'required|integer',
+            'price' => 'required|integer|min:0'
         ]);
 
-        // Proses upload gambar jika ada
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('public/covers');
             $validatedData['cover'] = str_replace('public/', 'storage/', $path);
@@ -55,12 +54,12 @@ class BookController extends Controller
 
         Book::create($validatedData);
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil ditambahkan!');
+        return redirect()->route('admin.books.index')->with('success', 'Book Succesfully Added!');
     }
 
     public function edit(Book $book)
     {
-        return view('pages.admin.books.edit', compact('book'));
+        return view('pages.admin.bookForm', compact('book'));
     }
 
     public function show(Book $book)
@@ -71,19 +70,20 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $validatedData = $request->validate([
-            'judul' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
-            'content' => 'required|string',
-            'penerbit' => 'required|string|max:255',
+            'description' => 'required|string',
+            'publisher' => 'required|string|max:255',
             'isbn' => 'required|string|unique:books,isbn,' . $book->id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'format' => 'required|in:soft cover,hard cover',
-            'bahasa' => 'required|string|max:100',
-            'tanggal_terbit' => 'required|date',
-            'panjang' => 'required|numeric',
-            'lebar' => 'required|numeric',
-            'berat' => 'required|integer',
-            'halaman' => 'required|integer',
+            'language' => 'required|string|max:100',
+            'release_date' => 'required|date',
+            'length' => 'required|numeric',
+            'widht' => 'required|numeric',
+            'weight' => 'required|integer',
+            'page' => 'required|integer',
+            'price' => 'required|integer|min:0'
         ]);
 
         if ($request->hasFile('image')) {
@@ -93,13 +93,13 @@ class BookController extends Controller
 
         $book->update($validatedData);
 
-        return redirect()->route('admin.books.index')->with('success', 'Data buku berhasil diperbarui!');
+        return redirect()->route('admin.books.index')->with('success', 'Book Successfully Edited');
     }
 
     public function destroy(Book $book)
     {
         $book->delete();
 
-        return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus.');
+        return redirect()->route('admin.books.index')->with('success', 'Book Removed.');
     }
 }

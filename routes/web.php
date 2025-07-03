@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
-use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\AdminController;
@@ -38,5 +37,4 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::resource('books', BookController::class);
 });
 
-Route::get('/{post:slug}', [PostController::class, 'show'])->name('posts.show');
-// Route::get('/{post:slug}', [PostController::class, 'show']);
+Route::get('/{post:slug}', [BookController::class, 'show'])->name('posts.show');

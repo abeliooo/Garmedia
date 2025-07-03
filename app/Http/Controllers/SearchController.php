@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class SearchController extends Controller
@@ -14,7 +14,7 @@ class SearchController extends Controller
         $products = collect();
 
         if ($query) {
-            $products = Post::where('title', 'LIKE', "%{$query}%")
+            $products = Book::where('title', 'LIKE', "%{$query}%")
                 ->orWhere('author', 'LIKE', "%{$query}%")
                 ->get();
         }

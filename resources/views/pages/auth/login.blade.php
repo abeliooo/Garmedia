@@ -31,7 +31,7 @@
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <small>Belum punya akun? <a href="{{ route('register') }}">Daftar</a></small>
+                    <small>Dont't Have An Account? <a href="{{ route('register') }}">Register</a></small>
                 </div>
             </div>
         </div>

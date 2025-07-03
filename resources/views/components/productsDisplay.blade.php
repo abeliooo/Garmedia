@@ -11,13 +11,13 @@
                     <i class="bi bi-heart-fill d-none"></i>
                 </a>
 
-                <img class="card-img-top" src="{{ $product['image'] }}" alt="{{ $product['title'] }}">
+                <img class="card-img-top" src="{{ asset($product->cover) }}" alt="{{ $product->title }}">
 
                 <div class="card-body p-4">
                     <div class="text-start">
-                        <h5 class="fw-bolder">{{ $product['title'] }}</h5>
-                        <p class="text-muted mb-2">{{ $product['author'] }}</p>
-                        Rp {{ number_format($product['price'], 0, ',', '.') }}
+                        <h5 class="fw-bolder">{{ $product->title }}</h5>
+                        <p class="text-muted mb-2">{{ $product->author }}</p>
+                        <strong>Rp {{ number_format($product->price, 0, ',', '.') }}</strong>
                     </div>
                 </div>
 

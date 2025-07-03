@@ -14,18 +14,19 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('cover');
-            $table->string('judul');
+            $table->string('title');
             $table->string('author');
             $table->enum('format', ['soft cover', 'hard cover']);
-            $table->text('deskripsi');
-            $table->string('penerbit');
+            $table->text('description');
+            $table->string('publisher');
             $table->string('isbn')->unique();
-            $table->string('bahasa');
-            $table->float('panjang');
-            $table->float('lebar');
-            $table->integer('berat');
-            $table->integer('halaman');
-            $table->date('tanggal_terbit');
+            $table->string('language');
+            $table->float('length');
+            $table->float('width');
+            $table->integer('weight');
+            $table->integer('page');
+            $table->date('release_date');
+            $table->unsignedInteger('price');
             $table->timestamps();
         });
     }

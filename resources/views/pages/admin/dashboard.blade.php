@@ -9,16 +9,16 @@
                     <h3 class="fw-bold mb-0">Admin Dashboard</h3>
                 </div>
                 <div class="card-body">
-                    <p class="fs-5">Selamat datang, <strong class="text-primary">{{ $admin->name }}</strong>!</p>
-                    <p class="text-muted">ID Admin Anda: {{ $admin->admin_id }}</p>
+                    <p class="fs-5">Welcome, <strong class="text-primary">{{ $admin->name }}</strong>!</p>
+                    <p class="text-muted">Admin ID : {{ $admin->admin_id }}</p>
                     <hr>
-                    <p>Apa yang ingin Anda lakukan hari ini?</p>
+                    <p>What you want to do?</p>
                     <div class="d-grid gap-2 d-md-flex">
                         <a href="{{ route('admin.books.create') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle-fill me-2"></i>Tambah Buku Baru
+                            <i class="bi bi-plus-circle-fill me-2"></i>Add Book
                         </a>
                         <a href="{{ route('admin.books.index') }}" class="btn btn-secondary">
-                            <i class="bi bi-book-fill me-2"></i>Kelola Daftar Buku
+                            <i class="bi bi-book-fill me-2"></i>Manage Book
                         </a>
                     </div>
                 </div>

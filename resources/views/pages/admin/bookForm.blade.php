@@ -2,10 +2,22 @@
 
 @section('content')
     <div class="container my-5">
-        <h1 class="fw-bolder mb-4">{{ isset($book) ? 'Edit Buku' : 'Tambah Buku Baru' }}</h1>
+        <h1 class="fw-bolder mb-4">{{ isset($book) ? 'Edit Book' : 'Add New Book' }}</h1>
 
-        <form action="{{ isset($book) ? route('admin.books.update', $book->id) : route('admin.books.store') }}" method="POST"
-            enctype="multipart/form-data">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <h5 class="alert-heading">There were some problems with your input.</h5>
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+
+        <form id="book-form" action="{{ isset($book) ? route('admin.books.update', $book->id) : route('admin.books.store') }}"
+            method="POST" enctype="multipart/form-data">
             @csrf
             @if (isset($book))
                 @method('PUT')
@@ -49,18 +61,33 @@
                         <div class="card-body">
                             <div class="mb-3">
                                 <label for="image" class="form-label">Book Cover</label>
-                                <img id="cover-preview"
-                                    src="{{ isset($book) && $book->cover ? asset($book->cover) : 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg' }}"
-                                    class="img-fluid rounded mb-2 d-block" alt="Cover Preview">
-                                <input type="file" class="form-control" id="image" name="image"
+                                <div class="cover-preview-wrapper">
+                                    <img id="cover-preview"
+                                        src="{{ isset($book) && $book->cover ? asset($book->cover) : 'https://placehold.co/300x400/dee2e6/6c757d?text=Cover' }}"
+                                        alt="Cover Preview">
+                                </div>
+                                <input type="file" class="form-control mt-2" id="image" name="image"
                                     onchange="previewCover()">
                             </div>
+
                             <div class="mb-3">
-                                <label for="format" class="form-label">Format</label>
-                                <select class="form-select" id="format" name="format" required>
-                                    <option value="soft cover" @selected(old('format', $book->format ?? '') == 'soft cover')>Soft Cover</option>
-                                    <option value="hard cover" @selected(old('format', $book->format ?? '') == 'hard cover')>Hard Cover</option>
-                                </select>
+                                <label class="form-label">Format</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="formats[]" value="soft cover"
+                                        id="format-soft" @if (is_array(old('formats', $book->formats ?? [])) && in_array('soft cover', old('formats', $book->formats ?? []))) checked @endif>
+                                    <label class="form-check-label" for="format-soft">Soft Cover</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="formats[]" value="hard cover"
+                                        id="format-hard" @if (is_array(old('formats', $book->formats ?? [])) && in_array('hard cover', old('formats', $book->formats ?? []))) checked @endif>
+                                    <label class="form-check-label" for="format-hard">Hard Cover</label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Price (Rp)</label>
+                                <input type="number" class="form-control" id="price" name="price"
+                                    value="{{ old('price', $book->price ?? '') }}" required>
                             </div>
                             <div class="mb-3">
                                 <label for="language" class="form-label">Language</label>
@@ -89,17 +116,12 @@
                                 <div class="col-6 mb-3">
                                     <label for="weight" class="form-label">Weight (g)</label>
                                     <input type="number" class="form-control" id="weight" name="weight"
-                                        value="{{ old('weight', $book->weight ?? '') }}" required>
+                                        value="{{ old('weight', $book->weight ?? '') }}" step="0.1" required>
                                 </div>
                                 <div class="col-6 mb-3">
                                     <label for="page" class="form-label">Page</label>
                                     <input type="number" class="form-control" id="page" name="page"
                                         value="{{ old('page', $book->page ?? '') }}" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="price" class="form-label">Price (Rp)</label>
-                                    <input type="number" class="form-control" id="price" name="price"
-                                        value="{{ old('price', $book->price ?? '') }}" required>
                                 </div>
                             </div>
                         </div>
@@ -116,4 +138,62 @@
             </div>
         </form>
     </div>
+
+    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" aria-labelledby="unsavedChangesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unsavedChangesModalLabel">Unsaved Changes</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    You have unsaved changes. Are you sure you want to discard them?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="{{ route('admin.books.index') }}" id="discard-changes-btn"
+                        class="btn btn-danger">Discard</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
+
+@push('scripts')
+    <script>
+        let isFormDirty = false;
+        let backUrl = "{{ route('admin.books.index') }}";
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('book-form');
+            form.addEventListener('input', () => {
+                isFormDirty = true;
+            });
+
+            const backButton = document.getElementById('back-button');
+            backButton.addEventListener('click', function(e) {
+                if (isFormDirty) {
+                    e.preventDefault();
+                    const confirmationModal = new bootstrap.Modal(document.getElementById(
+                        'unsavedChangesModal'));
+                    confirmationModal.show();
+                }
+            });
+        });
+
+        function previewCover() {
+            const coverInput = document.querySelector('#image');
+            const coverPreview = document.querySelector('#cover-preview');
+            isFormDirty = true;
+
+            if (coverInput.files && coverInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    coverPreview.src = e.target.result;
+                }
+                reader.readAsDataURL(coverInput.files[0]);
+            }
+        }
+    </script>
+@endpush

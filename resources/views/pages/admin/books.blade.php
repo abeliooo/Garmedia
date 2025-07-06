@@ -50,7 +50,7 @@
                                     </td>
                                     <td style="min-width: 200px;">{{ $book->title }}</td>
                                     <td style="min-width: 150px;">{{ $book->author }}</td>
-                                    <td>{{ $book->format }}</td>
+                                    <td>{{ is_array($book->formats) ? implode(', ', $book->formats) : '' }}</td>
                                     <td>{{ $book->publisher }}</td>
                                     <td>{{ $book->isbn }}</td>
                                     <td>{{ $book->release_date->format('Y-m-d') }}</td>

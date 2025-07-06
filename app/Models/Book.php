@@ -10,7 +10,7 @@ class Book extends Model
         'cover',
         'title',
         'author',
-        'format',
+        'formats',
         'description',
         'publisher',
         'isbn',
@@ -29,5 +29,6 @@ class Book extends Model
         'width' => 'float',
         'weight' => 'float',
         'price' => 'integer',
+        'formats' => 'array',
     ];
 }

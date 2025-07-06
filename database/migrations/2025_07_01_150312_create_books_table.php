@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('cover');
             $table->string('title');
             $table->string('author');
-            $table->enum('format', ['soft cover', 'hard cover']);
+            $table->json('formats');
             $table->text('description');
             $table->string('publisher');
             $table->string('isbn')->unique();

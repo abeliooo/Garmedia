@@ -22,7 +22,7 @@ class AdminMiddleware
         }
 
         if (Auth::user()->role !== 'admin') {
-            return redirect()->route('login')->with('error', 'You Don\'t Have Admin Role.');
+            abort(403, 'You do not have access to this page.');
         }
 
         return $next($request);

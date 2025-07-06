@@ -38,7 +38,8 @@ class BookController extends Controller
             'publisher' => 'required|string|max:255',
             'isbn' => 'required|string|unique:books,isbn',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'format' => 'required|in:soft cover,hard cover',
+            'formats' => 'required|array|min:1',
+            'formats.*' => 'in:soft cover,hard cover',
             'language' => 'required|string|max:100',
             'release_date' => 'required|date',
             'length' => 'required|numeric',
@@ -49,10 +50,11 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/covers');
-            $validatedData['cover'] = Storage::url($path);
+            $filename = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $path = $request->file('image')->storeAs('covers', $filename, 'public');
+            $validatedData['cover'] = 'covers/' . $filename;
         } else {
-            $validatedData['cover'] = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
+            $validatedData['cover'] = null;
         }
 
         Book::create($validatedData);
@@ -79,22 +81,25 @@ class BookController extends Controller
             'publisher' => 'required|string|max:255',
             'isbn' => 'required|string|unique:books,isbn,' . $book->id,
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'format' => 'required|in:soft cover,hard cover',
+            'formats' => 'required|array|min:1',
+            'formats.*' => 'in:soft cover,hard cover',
             'language' => 'required|string|max:100',
             'release_date' => 'required|date',
             'length' => 'required|numeric',
-            'widht' => 'required|numeric',
+            'width' => 'required|numeric',
             'weight' => 'required|integer',
             'page' => 'required|integer',
             'price' => 'required|integer|min:0'
         ]);
 
         if ($request->hasFile('image')) {
-            if ($book->cover && Storage::exists(str_replace('/storage', 'public', $book->cover))) {
-                Storage::delete(str_replace('/storage', 'public', $book->cover));
+            if ($book->cover && Storage::disk('public')->exists($book->cover)) {
+                Storage::disk('public')->delete($book->cover);
             }
-            $path = $request->file('image')->store('public/covers');
-            $validatedData['cover'] = str_replace('public/', 'storage/', $path);
+
+            $filename = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $path = $request->file('image')->storeAs('covers', $filename, 'public');
+            $validatedData['cover'] = 'covers/' . $filename;
         }
 
         $book->update($validatedData);
@@ -104,8 +109,8 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
-        if ($book->cover && Storage::exists(str_replace('/storage', 'public', $book->cover))) {
-            Storage::delete(str_replace('/storage', 'public', $book->cover));
+        if ($book->cover && Storage::disk('public')->exists($book->cover)) {
+            Storage::disk('public')->delete($book->cover);
         }
 
         $book->delete();

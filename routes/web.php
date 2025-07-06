@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
@@ -33,9 +34,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/review', [PageController::class, 'review'])->name('review');
 });
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::resource('books', BookController::class);
 });
 
-Route::get('/{post:slug}', [BookController::class, 'show'])->name('posts.show');
+Route::get('/cover/{filename}', function ($filename) {
+    $path = storage_path('app/public/covers/' . $filename);
+
+    if (!File::exists($path)) {
+        abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    return response($file)->header("Content-Type", $type);
+});
+
+Route::get('/product/{book}', [PageController::class, 'productDetails'])->name('product.detail');

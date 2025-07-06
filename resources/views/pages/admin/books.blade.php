@@ -6,7 +6,7 @@
             <h1 class="fw-bolder">Manage Book</h1>
             <div class="d-flex">
                 @include('components.button', [
-                    'route' => url()->previous(),
+                    'route' => route('admin.dashboard'),
                     'label' => 'Back',
                     'type' => 'secondary',
                 ])
@@ -42,7 +42,7 @@
                         <tbody>
                             @forelse ($books as $book)
                                 <tr>
-                                    <th scope="row">{{ $loop->iteration }}</th>
+                                    <th scope="row">{{ $books->firstItem() + $loop->index }}</th>
                                     <td>
                                         <a href="{{ route('admin.books.edit', $book->id) }}" class="btn btn-sm btn-warning">
                                             <i class="bi bi-pencil-square"></i>
@@ -64,6 +64,9 @@
                             @endforelse
                         </tbody>
                     </table>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    {{ $books->links() }}
                 </div>
             </div>
         </div>

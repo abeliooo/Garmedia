@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -49,7 +50,9 @@ class BookController extends Controller
 
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('public/covers');
-            $validatedData['cover'] = str_replace('public/', 'storage/', $path);
+            $validatedData['cover'] = Storage::url($path);
+        } else {
+            $validatedData['cover'] = 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg';
         }
 
         Book::create($validatedData);
@@ -87,6 +90,9 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            if ($book->cover && Storage::exists(str_replace('/storage', 'public', $book->cover))) {
+                Storage::delete(str_replace('/storage', 'public', $book->cover));
+            }
             $path = $request->file('image')->store('public/covers');
             $validatedData['cover'] = str_replace('public/', 'storage/', $path);
         }
@@ -98,6 +104,10 @@ class BookController extends Controller
 
     public function destroy(Book $book)
     {
+        if ($book->cover && Storage::exists(str_replace('/storage', 'public', $book->cover))) {
+            Storage::delete(str_replace('/storage', 'public', $book->cover));
+        }
+
         $book->delete();
 
         return redirect()->route('admin.books.index')->with('success', 'Book Removed.');

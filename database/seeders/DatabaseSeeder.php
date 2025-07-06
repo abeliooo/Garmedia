@@ -30,6 +30,17 @@ class DatabaseSeeder extends Seeder
                 'admin_id' => 'ADM001'
             ],
         );
+
+        User::create([
+            'name' => 'User',
+            'email' => 'user@email.com',
+            'password' => bcrypt('1123411234'),
+            'phone_number' => '081200000002',
+            'gender' => 'female',
+            'role' => 'user',
+            'admin_id' => null,
+        ]);
+
         User::factory(10)->create();
     }
 }

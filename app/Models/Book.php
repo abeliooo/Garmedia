@@ -25,5 +25,9 @@ class Book extends Model
 
     protected $casts = [
         'release_date' => 'date',
+        'length' => 'float',
+        'width' => 'float',
+        'weight' => 'float',
+        'price' => 'integer',
     ];
 }

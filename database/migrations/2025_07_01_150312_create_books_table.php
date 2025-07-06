@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('publisher');
             $table->string('isbn')->unique();
             $table->string('language');
-            $table->float('length');
-            $table->float('width');
-            $table->integer('weight');
+            $table->decimal('length', 8, 1);
+            $table->decimal('width', 8, 1);
+            $table->decimal('weight', 8, 1);
             $table->integer('page');
             $table->date('release_date');
             $table->unsignedInteger('price');

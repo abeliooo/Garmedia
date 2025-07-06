@@ -68,9 +68,11 @@
                                     value="{{ old('language', $book->language ?? '') }}" required>
                             </div>
                             <div class="mb-3">
-                            <label for="release_date" class="form-label">Release Date</label>
-                            <input type="date" class="form-control" id="release_date" name="release_date" value="{{ old('release_date', isset($book) && $book->release_date ? $book->release_date->format('Y-m-d') : '') }}" required>
-                        </div>
+                                <label for="release_date" class="form-label">Release Date</label>
+                                <input type="date" class="form-control" id="release_date" name="release_date"
+                                    value="{{ old('release_date', isset($book) && $book->release_date ? $book->release_date->format('Y-m-d') : '') }}"
+                                    required>
+                            </div>
                             <div class="row">
                                 <div class="col-6 mb-3">
                                     <label for="length" class="form-label">Length (cm)</label>
@@ -109,6 +111,7 @@
                 @include('components.button', [
                     'route' => route('admin.dashboard'),
                     'label' => 'Back',
+                    'type' => 'secondary',
                 ])
             </div>
         </form>

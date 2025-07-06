@@ -1,23 +1,22 @@
 @props(['products'])
-<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-
-    @foreach ($products as $product)
+<div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content">
+    @foreach ($products as $book)
         <div class="col mb-5">
-            <div class="card h-100">
-
-                <a href="#" class="btn btn-outline-danger btn-wishlist position-absolute"
-                    style="top: 0.5rem; right: 0.5rem">
+            <div class="card h-100 position-relative" onclick="window.location='{{ route('product.detail', $book->id) }}'">
+                <button class="btn btn-outline-danger btn-wishlist position-absolute"
+                        style="top: 0.5rem; right: 0.5rem; z-index: 10;"
+                        onclick="event.stopPropagation();">
                     <i class="bi bi-heart"></i>
                     <i class="bi bi-heart-fill d-none"></i>
-                </a>
+                </button>
 
-                <img class="card-img-top" src="{{ asset($product->cover) }}" alt="{{ $product->title }}">
+                <img src="{{ asset($book->cover) }}" class="card-img-top" alt="{{ $book->title }}">
 
                 <div class="card-body p-4">
                     <div class="text-start">
-                        <h5 class="fw-bolder">{{ $product->title }}</h5>
-                        <p class="text-muted mb-2">{{ $product->author }}</p>
-                        <strong>Rp {{ number_format($product->price, 0, ',', '.') }}</strong>
+                        <h5 class="fw-bolder">{{ $book->title }}</h5>
+                        <p class="text-muted mb-2">{{ $book->author }}</p>
+                        <strong>Rp {{ number_format($book->price, 0, ',', '.') }}</strong>
                     </div>
                 </div>
 
@@ -30,6 +29,7 @@
         </div>
     @endforeach
 </div>
+
 
 @push('scripts')
     <script>

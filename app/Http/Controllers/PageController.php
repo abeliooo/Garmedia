@@ -51,4 +51,9 @@ class PageController extends Controller
 
         return view('pages.productsPage', ['products' => $products]);
     }
+
+    public function productDetails(Book $book)
+    {
+        return view('components.productDetails', compact('book'));
+    }
 }

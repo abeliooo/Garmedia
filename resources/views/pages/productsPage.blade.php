@@ -17,7 +17,7 @@
                 @endif
             </div>
         @else
-            <x-productsDisplay :products="$products" />
+            <x-productsDisplay :products="$products" :wishlistBookIds="$wishlistBookIds" />
         @endif
     </div>
 @endsection

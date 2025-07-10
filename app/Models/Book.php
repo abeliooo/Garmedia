@@ -31,4 +31,11 @@ class Book extends Model
         'price' => 'integer',
         'formats' => 'array',
     ];
+
+    protected $guarded = [];
+
+    public function wishlistUsers()
+    {
+        return $this->belongsToMany(User::class, 'wishlists', 'book_id', 'user_id')->withTimestamps();
+    }
 }

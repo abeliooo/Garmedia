@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-lg-4 mb-4 mb-lg-0">
                 <div class="top" style="top: 2rem;">
-                    <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}"
+                    <img src="{{ asset('storage/covers/' . $book->cover) }}" alt="{{ $book->title }}"
                         class="img-fluid rounded shadow-sm w-75" alt="Cover of {{ $book->title }}">
                 </div>
             </div>
@@ -63,6 +63,11 @@
                     <button class="btn btn-dark flex-shrink-0" type="button">
                         <i class="bi-cart-fill me-1"></i>
                         Add to cart
+                    </button>
+                    <button class="btn btn-outline-danger btn-wishlist ms-2" data-book-id="{{ $book->id }}">
+                        @php $isWished = in_array($book->id, $wishlistBookIds); @endphp
+                        <i class="bi bi-heart{{ $isWished ? ' d-none' : '' }}"></i>
+                        <i class="bi bi-heart-fill{{ !$isWished ? ' d-none' : '' }}"></i>
                     </button>
                 </div>
 

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\AdminController;
 
@@ -27,6 +28,7 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 Route::middleware('auth')->group(function () {
     Route::get('/landing', [PageController::class, 'home'])->name('landing');
     Route::get('/wishlist', [PageController::class, 'wishlist'])->name('wishlist');
+    Route::post('/wishlist/toggle/{book}', [WishlistController::class, 'toggleWishlist'])->name('wishlist.toggle');
     Route::get('/cart', [PageController::class, 'cart'])->name('cart');
     Route::get('/account', [PageController::class, 'account'])->name('account');
     Route::get('/transaction', [PageController::class, 'transaction'])->name('transaction');

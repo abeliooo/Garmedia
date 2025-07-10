@@ -2,9 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Book;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Book;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class BookSeeder extends Seeder
 {
@@ -13,173 +15,40 @@ class BookSeeder extends Seeder
      */
     public function run(): void
     {
-        Book::query()->delete();
-
-        $books = [
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'Atomic Habits',
-                'author' => 'James Clear',
-                'formats' => 'soft cover',
-                'description' => 'An easy & proven way to build good habits & break bad ones.',
-                'publisher' => 'Avery Publishing Group',
-                'isbn' => '9780735211292',
-                'language' => 'English',
-                'length' => 22.9,
-                'width' => 15.2,
-                'weight' => 340,
-                'page' => 320,
-                'release_date' => '2018-10-16',
-                'price' => 150000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'The Psychology of Money',
-                'author' => 'Morgan Housel',
-                'formats' => 'soft cover',
-                'description' => 'Timeless lessons on wealth, greed, and happiness.',
-                'publisher' => 'Harriman House',
-                'isbn' => '9780857197689',
-                'language' => 'English',
-                'length' => 21.6,
-                'width' => 13.5,
-                'weight' => 250,
-                'page' => 252,
-                'release_date' => '2020-09-08',
-                'price' => 125000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'Sapiens: A Brief History of Humankind',
-                'author' => 'Yuval Noah Harari',
-                'formats' => 'hard cover',
-                'description' => 'A groundbreaking narrative of humanity’s creation and evolution.',
-                'publisher' => 'Harvill Secker',
-                'isbn' => '9780062316097',
-                'language' => 'English',
-                'length' => 23.4,
-                'width' => 15.3,
-                'weight' => 680,
-                'page' => 464,
-                'release_date' => '2015-02-10',
-                'price' => 250000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'To Kill a Mockingbird',
-                'author' => 'Harper Lee',
-                'formats' => 'soft cover',
-                'description' => 'A novel about the seriousness of the problems of racism, inequality and segregation.',
-                'publisher' => 'J. B. Lippincott & Co.',
-                'isbn' => '9780446310789',
-                'language' => 'English',
-                'length' => 19.1,
-                'width' => 10.6,
-                'weight' => 181,
-                'page' => 324,
-                'release_date' => '1960-07-11',
-                'price' => 95000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => '1984',
-                'author' => 'George Orwell',
-                'formats' => 'soft cover',
-                'description' => 'A dystopian social science fiction novel and cautionary tale.',
-                'publisher' => 'Secker & Warburg',
-                'isbn' => '9780451524935',
-                'language' => 'English',
-                'length' => 17.1,
-                'width' => 10.8,
-                'weight' => 181,
-                'page' => 328,
-                'release_date' => '1949-06-08',
-                'price' => 89000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'The Great Gatsby',
-                'author' => 'F. Scott Fitzgerald',
-                'formats' => 'hard cover',
-                'description' => 'A novel about the American dream and the roaring twenties.',
-                'publisher' => 'Charles Scribner\'s Sons',
-                'isbn' => '9780743273565',
-                'language' => 'English',
-                'length' => 20.3,
-                'width' => 13.2,
-                'weight' => 227,
-                'page' => 180,
-                'release_date' => '1925-04-10',
-                'price' => 175000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'The Lord of the Rings',
-                'author' => 'J.R.R. Tolkien',
-                'formats' => 'hard cover',
-                'description' => 'An epic high-fantasy novel.',
-                'publisher' => 'Allen & Unwin',
-                'isbn' => '9780618640157',
-                'language' => 'English',
-                'length' => 23.4,
-                'width' => 15.6,
-                'weight' => 1500,
-                'page' => 1178,
-                'release_date' => '1954-07-29',
-                'price' => 450000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'Pride and Prejudice',
-                'author' => 'Jane Austen',
-                'formats' => 'soft cover',
-                'description' => 'A romantic novel of manners.',
-                'publisher' => 'T. Egerton, Whitehall',
-                'isbn' => '9780141439518',
-                'language' => 'English',
-                'length' => 19.8,
-                'width' => 12.9,
-                'weight' => 227,
-                'page' => 279,
-                'release_date' => '1813-01-28',
-                'price' => 110000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'The Catcher in the Rye',
-                'author' => 'J.D. Salinger',
-                'formats' => 'soft cover',
-                'description' => 'A novel about teenage angst and alienation.',
-                'publisher' => 'Little, Brown and Company',
-                'isbn' => '9780316769488',
-                'language' => 'English',
-                'length' => 18.0,
-                'width' => 10.6,
-                'weight' => 159,
-                'page' => 224,
-                'release_date' => '1951-07-16',
-                'price' => 105000,
-            ],
-            [
-                'cover' => 'https://dummyimage.com/450x300/dee2e6/6c757d.jpg',
-                'title' => 'The Hobbit',
-                'author' => 'J.R.R. Tolkien',
-                'formats' => 'hard cover',
-                'description' => 'A children\'s fantasy novel.',
-                'publisher' => 'George Allen & Unwin',
-                'isbn' => '9780618260300',
-                'language' => 'English',
-                'length' => 19.7,
-                'width' => 13.0,
-                'weight' => 363,
-                'page' => 310,
-                'release_date' => '1937-09-21',
-                'price' => 195000,
-            ],
-        ];
+        $jsonPath = database_path('data/books.json');
+        $books = json_decode(File::get($jsonPath), true);
 
         foreach ($books as $bookData) {
-            Book::create($bookData);
+            $tempCoverPath = storage_path("app/public/temp-covers/" . $bookData['cover']);
+            $slug = Str::slug($bookData['title']);
+            $extension = pathinfo($bookData['cover'], PATHINFO_EXTENSION);
+            $finalCoverName = $slug . '-' . uniqid() . '.' . $extension;
+            $finalCoverPath = "covers/" . $finalCoverName;
+
+            if (file_exists($tempCoverPath)) {
+                Storage::disk('public')->put($finalCoverPath, file_get_contents($tempCoverPath));
+                unlink($tempCoverPath);
+            } else {
+                continue;
+            }
+
+            // Simpan ke database
+            Book::create([
+                'title' => $bookData['title'],
+                'author' => $bookData['author'],
+                'formats' => $bookData['formats'],
+                'description' => $bookData['description'],
+                'publisher' => $bookData['publisher'],
+                'isbn' => $bookData['isbn'],
+                'language' => $bookData['language'],
+                'length' => $bookData['length'],
+                'width' => $bookData['width'],
+                'weight' => $bookData['weight'],
+                'page' => $bookData['page'],
+                'release_date' => $bookData['release_date'],
+                'price' => $bookData['price'],
+                'cover' => $finalCoverName,
+            ]);
         }
     }
 }

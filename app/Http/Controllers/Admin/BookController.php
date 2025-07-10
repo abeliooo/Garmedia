@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Support\Str;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -50,7 +51,10 @@ class BookController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $filename = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $originalTitle = $request->input('title');
+            $slug = Str::slug($originalTitle);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $filename = $slug . '-' . uniqid() . '.' . $extension;
             $path = $request->file('image')->storeAs('covers', $filename, 'public');
             $validatedData['cover'] = 'covers/' . $filename;
         } else {
@@ -97,7 +101,11 @@ class BookController extends Controller
                 Storage::disk('public')->delete($book->cover);
             }
 
-            $filename = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            $originalTitle = $request->input('title');
+            $slug = Str::slug($originalTitle);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $filename = $slug . '-' . uniqid() . '.' . $extension;
+            
             $path = $request->file('image')->storeAs('covers', $filename, 'public');
             $validatedData['cover'] = 'covers/' . $filename;
         }

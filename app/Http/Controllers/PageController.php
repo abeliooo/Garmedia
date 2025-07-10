@@ -17,7 +17,17 @@ class PageController extends Controller
 
     public function wishlist()
     {
-        return view('pages.wishlistPage');
+        $user = User::find(Auth::id());
+
+        $products = collect();
+        $wishlistBookIds = [];
+
+        if ($user) {
+            $products = $user->wishlistBooks()->get();
+            $wishlistBookIds = $user->wishlistBooks()->pluck('books.id')->toArray();
+        }
+
+        return view('pages.wishlistPage', compact('products', 'wishlistBookIds'));
     }
 
     public function cart()
@@ -49,11 +59,29 @@ class PageController extends Controller
     {
         $products = Book::latest()->get();
 
-        return view('pages.productsPage', ['products' => $products]);
+        $wishlistBookIds = [];
+        if (Auth::check()) {
+            $user = User::find(Auth::id());
+            $wishlistBookIds = $user->wishlistBooks()->pluck('books.id')->toArray();
+        }
+
+        return view('pages.productsPage', [
+            'products' => $products,
+            'wishlistBookIds' => $wishlistBookIds
+        ]);
     }
 
     public function productDetails(Book $book)
     {
-        return view('components.productDetails', compact('book'));
-    }
+        $wishlistBookIds = [];
+        if (Auth::check()) {
+            $user = User::find(Auth::id());
+            $wishlistBookIds = $user->wishlistBooks()->pluck('books.id')->toArray();
+        }
+
+        return view('components.productDetails', [
+            'book' => $book,
+            'wishlistBookIds' => $wishlistBookIds
+        ]);
+    }    
 }

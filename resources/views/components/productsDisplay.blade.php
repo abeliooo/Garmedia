@@ -1,4 +1,4 @@
-@props(['products'])
+@props(['products', 'wishlistBookIds' => []])
 
 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content">
     @foreach ($products as $book)
@@ -7,13 +7,14 @@
                 <a href="{{ route('product.detail', $book->id) }}" class="text-decoration-none">
 
                     <button class="btn btn-outline-danger btn-wishlist position-absolute"
-                        style="top: 0.5rem; right: 0.5rem; z-index: 10;" onclick="event.stopPropagation();">
-                        <i class="bi bi-heart"></i>
-                        <i class="bi bi-heart-fill d-none"></i>
+                        style="top: 0.5rem; right: 0.5rem; z-index: 10;" data-book-id="{{ $book->id }}"
+                        onclick="event.stopPropagation(); event.preventDefault();">
+                        @php $isWished = in_array($book->id, $wishlistBookIds); @endphp
+                        <i class="bi bi-heart{{ $isWished ? ' d-none' : '' }}"></i>
+                        <i class="bi bi-heart-fill{{ !$isWished ? ' d-none' : '' }}"></i>
                     </button>
 
-                    <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}"
-                        class="card-img-top"
+                    <img src="{{ asset('storage/covers/' . $book->cover) }}" alt="{{ $book->title }}" class="card-img-top"
                         style="height: 250px; object-fit: contain; background-color: #f8f9fa;">
                 </a>
 
@@ -38,18 +39,53 @@
 @push('scripts')
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const wishlistButtons = document.querySelectorAll('.btn-wishlist');
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            wishlistButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
+            document.body.addEventListener('click', async function(event) {
+                if (!event.target.matches('.btn-wishlist, .btn-wishlist *')) {
+                    return;
+                }
 
-                    const heartIcon = button.querySelector('.bi-heart');
-                    const heartFillIcon = button.querySelector('.bi-heart-fill');
+                const button = event.target.closest('.btn-wishlist');
+                if (!button) return;
 
-                    heartIcon.classList.toggle('d-none');
-                    heartFillIcon.classList.toggle('d-none');
-                });
+                event.preventDefault();
+
+                const bookId = button.dataset.bookId;
+                if (!bookId) {
+                    console.error('Book ID not found!');
+                    return;
+                }
+
+                const heartIcon = button.querySelector('.bi-heart');
+                const heartFillIcon = button.querySelector('.bi-heart-fill');
+
+                try {
+                    const response = await fetch(`/wishlist/toggle/${bookId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken,
+                            'Accept': 'application/json',
+                        }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.status === 'added') {
+                        heartIcon.classList.add('d-none');
+                        heartFillIcon.classList.remove('d-none');
+                    } else if (data.status === 'removed') {
+                        heartIcon.classList.remove('d-none');
+                        heartFillIcon.classList.add('d-none');
+                    }
+
+                } catch (error) {
+                    console.error('There was a problem with the fetch operation:', error);
+                }
             });
         });
     </script>

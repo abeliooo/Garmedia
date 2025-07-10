@@ -1,6 +1,6 @@
 <header class="py-3">
     <div class="container-fluid d-grid gap-3 align-items-center" style="grid-template-columns: 1fr 2fr;">
-        <div class="dropdown"> <a href="/" class="link-body-emphasis text-decoration-none fw-bold">
+        <div class="dropdown"> <a href="/landing" class="link-body-emphasis text-decoration-none fw-bold">
                 Garmedia
             </a>
 

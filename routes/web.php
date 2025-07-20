@@ -31,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/wishlist/toggle/{book}', [WishlistController::class, 'toggleWishlist'])->name('wishlist.toggle');
     Route::get('/cart', [PageController::class, 'cart'])->name('cart');
     Route::get('/account', [PageController::class, 'account'])->name('account');
+    Route::put('/account/update', [UserController::class, 'update'])->name('account.update');
     Route::get('/transaction', [PageController::class, 'transaction'])->name('transaction');
     Route::get('/address', [PageController::class, 'address'])->name('address');
     Route::get('/review', [PageController::class, 'review'])->name('review');

@@ -24,7 +24,7 @@ class PageController extends Controller
 
         if ($user) {
             $products = $user->wishlistBooks()->get();
-            $wishlistBookIds = $user->wishlistBooks()->pluck('books.id')->toArray();
+            $wishlistBookIds = $products->pluck('id')->toArray();
         }
 
         return view('pages.wishlistPage', compact('products', 'wishlistBookIds'));
@@ -37,8 +37,11 @@ class PageController extends Controller
 
     public function account()
     {
-        return view('pages.accountPage');
+        $user = Auth::user();
+
+        return view('pages.accountPage', compact('user'));
     }
+
 
     public function transaction()
     {

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
                 'email' => 'admin@garmedia.com',
                 'password' => bcrypt('admin123'),
                 'phone_number' => '081200000001',
+                'date_of_birth' => '2000-01-01',
                 'gender' => 'male',
                 'role' => 'admin',
                 'admin_id' => 'ADM001'
@@ -34,6 +35,7 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@email.com',
             'password' => bcrypt('1123411234'),
             'phone_number' => '081200000002',
+            'date_of_birth' => '2000-01-02',
             'gender' => 'female',
             'role' => 'user',
             'admin_id' => null,

@@ -68,6 +68,7 @@
                         @php $isWished = in_array($book->id, $wishlistBookIds); @endphp
                         <i class="bi bi-heart{{ $isWished ? ' d-none' : '' }}"></i>
                         <i class="bi bi-heart-fill{{ !$isWished ? ' d-none' : '' }}"></i>
+                        Wishlist
                     </button>
                 </div>
 
@@ -100,47 +101,3 @@
     </div>
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Logika untuk tombol kuantitas
-            const btnMinus = document.getElementById('button-minus');
-            const btnPlus = document.getElementById('button-plus');
-            const inputQuantity = document.getElementById('inputQuantity');
-
-            btnMinus.addEventListener('click', function() {
-                let currentValue = parseInt(inputQuantity.value);
-                if (currentValue > 1) {
-                    inputQuantity.value = currentValue - 1;
-                }
-            });
-
-            btnPlus.addEventListener('click', function() {
-                let currentValue = parseInt(inputQuantity.value);
-                inputQuantity.value = currentValue + 1;
-            });
-
-            const btnReadMore = document.getElementById('btn-read-more');
-            const btnReadLess = document.getElementById('btn-read-less');
-            const shortDesc = document.getElementById('description-short');
-            const fullDesc = document.getElementById('description-full');
-
-            if (btnReadMore) {
-                btnReadMore.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    shortDesc.classList.add('d-none');
-                    fullDesc.classList.remove('d-none');
-                });
-            }
-
-            if (btnReadLess) {
-                btnReadLess.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    fullDesc.classList.add('d-none');
-                    shortDesc.classList.remove('d-none');
-                });
-            }
-        });
-    </script>
-@endpush

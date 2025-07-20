@@ -15,15 +15,15 @@ class WishlistController extends Controller
         $user = User::find(Auth::id());
 
         if (!$user) {
-            return redirect()->route('login')->with('error', 'You must be logged in.');
+            return response()->json(['status' => 'unauthenticated'], 401);
         }
 
         if ($user->wishlistBooks()->where('book_id', $book->id)->exists()) {
             $user->wishlistBooks()->detach($book->id);
-            return back()->with('success', 'Removed from wishlist.');
+            return response()->json(['status' => 'removed']);
         } else {
             $user->wishlistBooks()->attach($book->id);
-            return back()->with('success', 'Added to wishlist.');
+            return response()->json(['status' => 'added']);
         }
     }
 }

@@ -3,9 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Address;
+use App\Models\Transaction;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 
 class User extends Authenticatable
@@ -23,6 +27,7 @@ class User extends Authenticatable
         'email',
         'password',
         'phone_number',
+        'date_of_birth',
         'address',
         'gender',
         'profile_picture',
@@ -50,11 +55,27 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'date_of_birth' => 'date',
         ];
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class);
     }
 
     public function wishlistBooks()
     {
         return $this->belongsToMany(Book::class, 'wishlists', 'user_id', 'book_id')->withTimestamps();
+    }
+
+    public function cartItems(): BelongsToMany
+    {
+        return $this->belongsToMany(Book::class, 'cart_items')->withPivot('quantity')->withTimestamps();
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
     }
 }

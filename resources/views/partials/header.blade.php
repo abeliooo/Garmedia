@@ -31,32 +31,44 @@
             </form>
 
             <div class="d-flex align-items-center ms-auto">
-                <a href="/wishlist" class="link-body-emphasis me-3" aria-label="Wishlist">
-                    <i class="bi bi-heart fs-5"></i>
-                </a>
+                @auth
+                    <a href="{{ route('wishlist') }}" class="link-body-emphasis me-3" aria-label="Wishlist">
+                        <i class="bi bi-heart fs-5"></i>
+                    </a>
 
-                <a href="/cart" class="link-body-emphasis me-3" aria-label="Cart">
-                    <i class="bi bi-bookmark-heart fs-5"></i>
-                </a>
+                    <a href="{{ route('cart') }}" class="link-body-emphasis me-3" aria-label="Cart">
+                        <i class="bi bi-cart fs-5"></i>
+                    </a>
 
-                <div class="flex-shrink-0 dropdown">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
-                        data-bs-toggle="dropdown" aria-expanded="false"> <img src="https://github.com/mdo.png"
-                            alt="mdo" width="32" height="32" class="rounded-circle"> </a>
-                    <ul class="dropdown-menu text-small shadow">
-                        <li><a class="dropdown-item" href="/transaction">Transaction</a></li>
-                        <li><a class="dropdown-item" href="/account">Account</a></li>
-                        <li><a class="dropdown-item" href="/address">Address</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/review">Review</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="/">Sign out</a></li>
-                    </ul>
-                </div>
+                    <div class="flex-shrink-0 dropdown">
+                        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="{{ asset('storage/' . Auth::user()->profile_picture) }}"
+                                alt="{{ Auth::user()->name }}" width="32" height="32" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu text-small shadow">
+                            <li><a class="dropdown-item" href="{{ route('transaction') }}">Transaction</a></li>
+                            <li><a class="dropdown-item" href="{{ route('account') }}">Account</a></li>
+                            <li><a class="dropdown-item" href="{{ route('address') }}">Address</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="{{ route('review') }}">Review</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Sign out</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a href="{{ route('login') }}" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="{{ route('register') }}" class="btn btn-primary">Sign-up</a>
+                @endauth
             </div>
 
         </div>

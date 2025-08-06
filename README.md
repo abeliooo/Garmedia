@@ -12,3 +12,11 @@ Or as user by user@email.com with password '1123411234'
 
 ## What I Use To Build This Code?
 Because I want to learn the plain Laravel such as how it work, I only use Html, Bootstrap, JS
+
+## Note
+In this web, I didn't put the cover image in asset, I put it in the storage/public/temp-covers
+If you want to use just extract covers.zip and put it in the temp-covers, then do 
+php artisan migrate:fresh --seed
+Always repeat this step whenever you want to migrate the database
+### Why I Use This Method
+I use this method because in the real time scenario we don't put the covers in assets because it will make the web become heavier (If you don't want to use this method just put it in the assets)

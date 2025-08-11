@@ -1,3 +1,5 @@
+import { Modal } from 'bootstrap';
+
 document.addEventListener('DOMContentLoaded', function () {
     const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const successAlert = document.getElementById('success-alert');
@@ -28,10 +30,9 @@ document.addEventListener('DOMContentLoaded', function () {
     function displaySuccess(message) {
         successAlert.innerHTML = message;
         successAlert.classList.remove('d-none');
-        // Hide success message after 3 seconds
         setTimeout(() => {
             successAlert.classList.add('d-none');
-        }, 3000);
+        }, 2000);
     }
 
     async function handleFormSubmit(url, formData, errorAlert, successMessage = null) {
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 // Success - close modal and show success message
-                const modal = bootstrap.Modal.getInstance(errorAlert.closest('.modal'));
+                const modal = Modal.getInstance(errorAlert.closest('.modal'));
                 if (modal) {
                     modal.hide();
                 }

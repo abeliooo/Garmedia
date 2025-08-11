@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->text('address')->nullable();
             $table->enum('gender', ['male', 'female', 'prefer not to say'])->nullable();
-            $table->string('profile_picture')->nullable()->default('images/profile/default.png');
+            $table->string('profile_picture')->nullable();
             $table->enum('role', ['admin', 'user'])->default('user');
             $table->string('admin_id')->nullable()->unique();
             $table->rememberToken();

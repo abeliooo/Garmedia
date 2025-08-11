@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\AdminController;
 
@@ -30,8 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [PageController::class, 'wishlist'])->name('wishlist');
     Route::post('/wishlist/toggle/{book}', [WishlistController::class, 'toggleWishlist'])->name('wishlist.toggle');
     Route::get('/cart', [PageController::class, 'cart'])->name('cart');
-    Route::get('/account', [PageController::class, 'account'])->name('account');
-    Route::put('/account/update', [UserController::class, 'update'])->name('account.update');
+    Route::get('/account', [AccountController::class, 'index'])->name('account.index');
+    Route::post('/account/update-field', [AccountController::class, 'updateField'])->name('account.update.field');
+    Route::post('/account/update-password', [AccountController::class, 'updatePassword'])->name('account.update.password');
+    Route::post('/account/update-picture', [AccountController::class, 'updatePicture'])->name('account.update.picture');
     Route::get('/transaction', [PageController::class, 'transaction'])->name('transaction');
     Route::get('/address', [PageController::class, 'address'])->name('address');
     Route::get('/review', [PageController::class, 'review'])->name('review');
@@ -54,5 +57,3 @@ Route::get('/cover/{filename}', function ($filename) {
 
     return response($file)->header("Content-Type", $type);
 });
-
-Route::get('/product/{book}', [PageController::class, 'productDetails'])->name('product.detail');

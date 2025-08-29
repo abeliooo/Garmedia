@@ -12,7 +12,19 @@ class PageController extends Controller
 {
     public function home()
     {
-        return view('pages.landingPage');
+        $recommendedBooks = Book::inRandomOrder()->take(15)->get();
+        $affordableBooks = Book::where('price', '<=', 100000)->inRandomOrder()->take(15)->get();
+        
+        $wishlistBookIds = [];
+        if (Auth::check()) {
+            $wishlistBookIds = Auth::user()->wishlistBooks()->pluck('book_id')->toArray();
+        }
+
+        return view('pages.landingPage', [
+            'recommendedBooks' => $recommendedBooks,
+            'affordableBooks' => $affordableBooks,
+            'wishlistBookIds' => $wishlistBookIds,
+        ]);
     }
 
     public function wishlist()

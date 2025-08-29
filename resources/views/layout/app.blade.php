@@ -18,7 +18,6 @@
 
     @include('partials.footer')
 
-    <script src="{{ asset('js/wishlist.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

@@ -44,7 +44,9 @@ class PageController extends Controller
 
     public function cart()
     {
-        return view('pages.cartPage');
+        $cartItems = Auth::user()->cartItems()->get();
+        
+        return view('pages.cartPage', compact('cartItems'));
     }
 
     public function account()

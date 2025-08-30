@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Admin\BookController;
 use App\Http\Controllers\Admin\AdminController;
 
@@ -31,6 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/wishlist', [PageController::class, 'wishlist'])->name('wishlist');
     Route::post('/wishlist/toggle/{book}', [WishlistController::class, 'toggleWishlist'])->name('wishlist.toggle');
     Route::get('/cart', [PageController::class, 'cart'])->name('cart');
+    Route::post('/cart/add/{book}', [CartController::class, 'add'])->name('cart.add');
+    Route::post('/cart/update/{book}', [CartController::class, 'update'])->name('cart.update');
+    Route::post('/cart/remove/{book}', [CartController::class, 'remove'])->name('cart.remove');
     Route::get('/account', [AccountController::class, 'index'])->name('account.index');
     Route::post('/account/update-field', [AccountController::class, 'updateField'])->name('account.update.field');
     Route::post('/account/update-password', [AccountController::class, 'updatePassword'])->name('account.update.password');

@@ -38,6 +38,24 @@
                                     value="{{ old('author', $book->author ?? '') }}" required>
                             </div>
                             <div class="mb-3">
+                                <label for="genres" class="form-label">Genres</label>
+                                {{-- Ubah menjadi multi-select dengan nama genres[] --}}
+                                <select class="form-select" id="genres" name="genres[]" multiple required>
+                                    {{-- Loop melalui variabel $genres dari controller --}}
+                                    @foreach ($genres as $genre)
+                                        <option value="{{ $genre->id }}"
+                                            {{-- Logika untuk memilih genre yang sudah ada saat edit --}}
+                                            @if(isset($book) && $book->genres->contains($genre->id)) selected @endif
+                                            {{-- Logika untuk mempertahankan input lama jika validasi gagal --}}
+                                            @if(is_array(old('genres')) && in_array($genre->id, old('genres'))) selected @endif
+                                        >
+                                            {{ $genre->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text">Hold down the Ctrl (windows) or Command (Mac) button to select multiple options.</div>
+                            </div>
+                            <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
                                 <textarea class="form-control" id="description" name="description" rows="5">{{ old('description', $book->description ?? '') }}</textarea>
                             </div>
@@ -63,8 +81,8 @@
                                 <label for="image" class="form-label">Book Cover</label>
                                 <div class="cover-preview-wrapper">
                                     <img id="cover-preview"
-                                        src="{{ isset($book) && $book->cover ? asset($book->cover) : 'https://placehold.co/300x400/dee2e6/6c757d?text=Cover' }}"
-                                        alt="Cover Preview">
+                                        src="{{ isset($book) && $book->cover ? asset('storage/' . $book->cover) : 'https://placehold.co/300x400/dee2e6/6c757d?text=Cover' }}"
+                                        alt="Cover Preview" style="max-height: 200px; width: auto; display: block; margin-bottom: 10px;">
                                 </div>
                                 <input type="file" class="form-control mt-2" id="image" name="image"
                                     onchange="previewCover()">
@@ -139,23 +157,20 @@
         </form>
     </div>
 
-    <div class="modal fade" id="unsavedChangesModal" tabindex="-1" aria-labelledby="unsavedChangesModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="unsavedChangesModalLabel">Unsaved Changes</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    You have unsaved changes. Are you sure you want to discard them?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <a href="{{ route('admin.books.index') }}" id="discard-changes-btn"
-                        class="btn btn-danger">Discard</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <script>
+        function previewCover() {
+            const cover = document.querySelector('#image');
+            const preview = document.querySelector('#cover-preview');
+            const file = cover.files[0];
+            const reader = new FileReader();
+
+            reader.addEventListener("load", function () {
+                preview.src = reader.result;
+            }, false);
+
+            if (file) {
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
 @endsection

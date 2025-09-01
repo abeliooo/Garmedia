@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Support\Str;
 use App\Models\Book;
+use App\Models\Genre;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class BookController extends Controller
 {
@@ -27,7 +29,8 @@ class BookController extends Controller
 
     public function create()
     {
-        return view('pages.admin.bookForm');
+        $genres = Genre::all();
+        return view('pages.admin.bookForm', compact('genres'));
     }
 
     public function store(Request $request)
@@ -47,28 +50,33 @@ class BookController extends Controller
             'width' => 'required|numeric',
             'weight' => 'required|integer',
             'page' => 'required|integer',
-            'price' => 'required|integer|min:0'
+            'price' => 'required|integer|min:0',
+            'genres' => 'required|array',
+            'genres.*' => 'exists:genres,id'
         ]);
+
+        $bookData = collect($validatedData)->except('genres')->toArray();
 
         if ($request->hasFile('image')) {
             $originalTitle = $request->input('title');
             $slug = Str::slug($originalTitle);
             $extension = $request->file('image')->getClientOriginalExtension();
             $filename = $slug . '-' . uniqid() . '.' . $extension;
-            $path = $request->file('image')->storeAs('covers', $filename, 'public');
-            $validatedData['cover'] = 'covers/' . $filename;
+            $bookData['cover'] = $request->file('image')->storeAs('covers', $filename, 'public');
         } else {
             $validatedData['cover'] = null;
         }
 
-        Book::create($validatedData);
+        $book = Book::create($bookData);
+        $book->genres()->sync($request->input('genres'));
 
         return redirect()->route('admin.books.index')->with('success', 'Book Succesfully Added!');
     }
 
     public function edit(Book $book)
     {
-        return view('pages.admin.bookForm', compact('book'));
+        $genres = Genre::all();
+        return view('pages.admin.bookForm', compact('book', 'genres'));
     }
 
     public function show(Book $book)
@@ -93,8 +101,12 @@ class BookController extends Controller
             'width' => 'required|numeric',
             'weight' => 'required|integer',
             'page' => 'required|integer',
-            'price' => 'required|integer|min:0'
+            'price' => 'required|integer|min:0',
+            'genres' => 'required|array',
+            'genres.*' => 'exists:genres,id'
         ]);
+
+        $bookData = collect($validatedData)->except('genres')->toArray();
 
         if ($request->hasFile('image')) {
             if ($book->cover && Storage::disk('public')->exists($book->cover)) {
@@ -105,12 +117,11 @@ class BookController extends Controller
             $slug = Str::slug($originalTitle);
             $extension = $request->file('image')->getClientOriginalExtension();
             $filename = $slug . '-' . uniqid() . '.' . $extension;
-            
-            $path = $request->file('image')->storeAs('covers', $filename, 'public');
-            $validatedData['cover'] = 'covers/' . $filename;
+            $bookData['cover'] = $request->file('image')->storeAs('covers', $filename, 'public');
         }
 
-        $book->update($validatedData);
+        $book->update($bookData);
+        $book->genres()->sync($request->input('genres'));
 
         return redirect()->route('admin.books.index')->with('success', 'Book Successfully Edited');
     }

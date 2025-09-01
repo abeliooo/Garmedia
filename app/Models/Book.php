@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Book extends Model
 {
@@ -37,5 +38,10 @@ class Book extends Model
     public function wishlistUsers()
     {
         return $this->belongsToMany(User::class, 'wishlists', 'book_id', 'user_id')->withTimestamps();
+    }
+
+    public function genres(): BelongsToMany
+    {
+        return $this->belongsToMany(Genre::class, 'book_genre');
     }
 }

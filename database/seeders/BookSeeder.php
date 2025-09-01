@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Book;
+use App\Models\Genre;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -32,8 +33,14 @@ class BookSeeder extends Seeder
                 continue;
             }
 
-            // Simpan ke database
-            Book::create([
+            $genreNames = array_map('trim', explode(',', $bookData['genre']));
+            $genreIds = [];
+            foreach ($genreNames as $genreName) {
+                $genre = Genre::firstOrCreate(['name' => $genreName]);
+                $genreIds[] = $genre->id;
+            }
+
+            $book = Book::create([
                 'title' => $bookData['title'],
                 'author' => $bookData['author'],
                 'formats' => $bookData['formats'],
@@ -49,6 +56,8 @@ class BookSeeder extends Seeder
                 'price' => $bookData['price'],
                 'cover' => $finalCoverName,
             ]);
+
+            $book->genres()->sync($genreIds);
         }
     }
 }

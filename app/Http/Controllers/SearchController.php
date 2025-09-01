@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SearchController extends Controller
 {
@@ -11,17 +12,28 @@ class SearchController extends Controller
     {
         $query = $request->input('q');
 
-        $products = collect();
+        $books = Book::query()
+            ->when($query, function ($query, $search) {
+                $query->where(function ($subQuery) use ($search) {
+                    $subQuery->where('title', 'like', "%{$search}%")
+                        ->orWhere('author', 'like', "%{$search}%");
+                })
+                    ->orWhereHas('genres', function ($genreQuery) use ($search) {
+                        $genreQuery->where('name', 'like', "%{$search}%");
+                    });
+            })
+            ->latest()
+            ->paginate(12);
 
-        if ($query) {
-            $products = Book::where('title', 'LIKE', "%{$query}%")
-                ->orWhere('author', 'LIKE', "%{$query}%")
-                ->get();
+        $wishlistBookIds = [];
+        if (Auth::check()) {
+            $wishlistBookIds = Auth::user()->wishlistBooks()->pluck('book_id')->toArray();
         }
 
         return view('pages.productsPage', [
-            'products' => $products,
-            'searchTerm' => $query
+            'products' => $books,
+            'wishlistBookIds' => $wishlistBookIds,
+            'query' => $query
         ]);
     }
 }

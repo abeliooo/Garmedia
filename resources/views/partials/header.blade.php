@@ -12,16 +12,10 @@
                     Category
                 </a>
 
-                <ul class="dropdown-menu text-small shadow" style="">
-                    <li><a class="dropdown-item active" href="#" aria-current="page">Overview</a></li>
-                    <li><a class="dropdown-item" href="#">Inventory</a></li>
-                    <li><a class="dropdown-item" href="#">Customers</a></li>
-                    <li><a class="dropdown-item" href="#">Products</a></li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="#">Reports</a></li>
-                    <li><a class="dropdown-item" href="#">Analytics</a></li>
+                <ul class="dropdown-menu text-small shadow">
+                    @foreach ($genres as $genre)
+                        <li><a class="dropdown-item" href="{{ route('search', ['q' => $genre->name]) }}">{{ $genre->name }}</a></li>
+                    @endforeach
                 </ul>
             </div>
 

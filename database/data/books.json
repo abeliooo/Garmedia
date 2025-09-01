@@ -15,8 +15,8 @@
         "page": 320,
         "release_date": "2018-10-16",
         "price": 150000,
-        "cover": "Atomic-Habits.jpg"
-    },
+        "cover": "Atomic-Habits.jpg",
+        "genre": "Non-Fiction"},
     {
         "title": "Sapiens",
         "author": "Yuval Noah Harari",
@@ -33,8 +33,8 @@
         "page": 544,
         "release_date": "2017-9-11",
         "price": 125000,
-        "cover": "Sapiens.jpg"
-    },
+        "cover": "Sapiens.jpg",
+        "genre": "Non-Fiction"},
     {
         "title": "Laut Bercerita",
         "author": "Leila S. Chudori",
@@ -51,7 +51,8 @@
         "page": 400,
         "release_date": "2017-12-21",
         "price": 115000,
-        "cover": "Laut-Bercerita.jpg"
+        "cover": "Laut-Bercerita.jpg",
+        "genre": "Fiction"
     },
     {
         "title": "Teka-Teki Rumah Aneh",
@@ -69,7 +70,8 @@
         "page": 224,
         "release_date": "2023-4-1",
         "price": 79000,
-        "cover": "Teka-Teki-Rumah-Aneh.jpg"
+        "cover": "Teka-Teki-Rumah-Aneh.jpg",
+        "genre": "Fiction, Horror"
     },
     {
         "title": "Animal Farm",
@@ -87,7 +89,8 @@
         "page": 100,
         "release_date": "2024-7-26",
         "price": 50000,
-        "cover": "Animal-Farm.jpg"
+        "cover": "Animal-Farm.jpg",
+        "genre": "Fiction"
     },
     {
         "title": "1984",
@@ -105,7 +108,8 @@
         "page": 408,
         "release_date": "2017-9-11",
         "price": 125000,
-        "cover": "1984.jpg"
+        "cover": "1984.jpg",
+        "genre": "Fiction, Dystopian"
     },
     {
         "title": "Akasha : Monster 01",
@@ -123,7 +127,8 @@
         "page": 424,
         "release_date": "2023-7-5",
         "price": 158000,
-        "cover": "Akasha-Monster-1.jpg"
+        "cover": "Akasha-Monster-1.jpg",
+        "genre": "Manga, Horror, Mystery"
     },
     {
         "title": "Sisi Tergelap Surga",
@@ -141,7 +146,8 @@
         "page": 304,
         "release_date": "2023-12-13",
         "price": 99000,
-        "cover": "Sisi-Tergelap-Surga.jpg"
+        "cover": "Sisi-Tergelap-Surga.jpg",
+        "genre": "Fiction, Contemporary"
     },
     {
         "title": "Panzer-Sejarah Strategi & Taktik Lapis Baja",
@@ -159,7 +165,8 @@
         "page": 200,
         "release_date": "2022-11-3",
         "price": 139000,
-        "cover": "Panzer-Sejarah-Strategi-dan-Taktik-Lapis-Baja.jpg"
+        "cover": "Panzer-Sejarah-Strategi-dan-Taktik-Lapis-Baja.jpg",
+        "genre": "History, Military"
     },
     {
         "title": "Light Novel: Gimai Seikatsu 01 - Hari-Hariku Bersama Saki",
@@ -177,6 +184,7 @@
         "page": 258,
         "release_date": "2025-5-20",
         "price": 98000,
-        "cover": "Gimai-Seikatsu-1.jpg"
+        "cover": "Gimai-Seikatsu-1.jpg",
+        "genre": "Light Novel, Romance, Slice of Life"
     }
 ]

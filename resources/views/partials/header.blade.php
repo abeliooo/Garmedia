@@ -43,7 +43,7 @@
                         <ul class="dropdown-menu text-small shadow">
                             <li><a class="dropdown-item" href="{{ route('transaction') }}">Transaction</a></li>
                             <li><a class="dropdown-item" href="{{ route('account.index') }}">Account</a></li>
-                            <li><a class="dropdown-item" href="{{ route('address') }}">Address</a></li>
+                            <li><a class="dropdown-item" href="{{ route('addresses.index') }}">Address</a></li>
                             <li>
                                 <hr class="dropdown-divider">
                             </li>

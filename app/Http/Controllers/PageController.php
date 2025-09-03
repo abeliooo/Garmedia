@@ -62,10 +62,14 @@ class PageController extends Controller
         return view('pages.transactionPage');
     }
 
-    public function address()
-    {
-        return view('pages.addressPage');
-    }
+    // public function address()
+    // {
+    //     $user = Auth::user();
+
+    //     $addresses = $user->addresses()->get();
+
+    //     return view('pages.addressPage', compact('addresses'));
+    // }
 
     public function review()
     {

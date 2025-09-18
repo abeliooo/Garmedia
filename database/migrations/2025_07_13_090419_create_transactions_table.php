@@ -12,12 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id(); // Ini akan menjadi TransactionID Anda
+            $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('address_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('total_price');
+            $table->foreignId('address_id')->nullable()->constrained()->onDelete('set null');
+            $table->unsignedInteger('total_amount');
+            $table->string('shipping_method');
+            $table->unsignedInteger('shipping_cost');
             $table->string('status')->default('pending');
-            $table->timestamp('transaction_date')->useCurrent();
             $table->timestamps();
         });
     }

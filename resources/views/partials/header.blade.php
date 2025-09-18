@@ -30,7 +30,7 @@
                         <i class="bi bi-heart fs-5"></i>
                     </a>
 
-                    <a href="{{ route('cart') }}" class="link-body-emphasis me-3" aria-label="Cart">
+                    <a href="{{ route('cart.index') }}" class="link-body-emphasis me-3" aria-label="Cart">
                         <i class="bi bi-cart fs-5"></i>
                     </a>
 
@@ -41,7 +41,7 @@
                                 alt="{{ Auth::user()->name }}" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
-                            <li><a class="dropdown-item" href="{{ route('transaction') }}">Transaction</a></li>
+                            <li><a class="dropdown-item" href="{{ route('transaction.index') }}">Transaction</a></li>
                             <li><a class="dropdown-item" href="{{ route('account.index') }}">Account</a></li>
                             <li><a class="dropdown-item" href="{{ route('addresses.index') }}">Address</a></li>
                             <li>

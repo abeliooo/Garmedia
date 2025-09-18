@@ -15,12 +15,13 @@ class Transaction extends Model
     protected $fillable = [
         'user_id',
         'address_id',
-        'total_price',
+        'total_amount',
+        'shipping_method',
+        'shipping_cost',
         'status',
-        'transaction_date',
     ];
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
@@ -28,5 +29,17 @@ class Transaction extends Model
     public function details(): HasMany
     {
         return $this->hasMany(TransactionDetail::class);
+    }
+
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Book::class, 'book_transaction')
+            ->withPivot('quantity', 'price')
+            ->withTimestamps();
     }
 }

@@ -8,6 +8,15 @@ use App\Models\Book;
 
 class CartController extends Controller
 {
+    public function index()
+    {
+        $user = Auth::user();
+
+        $cartItems = $user->cartItems;
+
+        return view('pages.cartPage', compact('cartItems'));
+    }
+
     public function add(Book $book)
     {
         $user = Auth::user();

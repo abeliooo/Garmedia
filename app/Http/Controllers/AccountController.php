@@ -149,4 +149,13 @@ class AccountController extends Controller
             ], 500);
         }
     }
+
+    public function showUserProfile()
+    {
+        $user = Auth::user();
+
+        $phoneNumber = $user->phone_number;
+
+        return view('profile', ['phone' => $phoneNumber]);
+    }
 }

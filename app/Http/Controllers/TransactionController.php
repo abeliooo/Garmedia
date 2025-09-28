@@ -8,6 +8,15 @@ use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
+    public function index()
+    {
+        $user = Auth::user();
+
+        $transactions = Transaction::where('user_id', $user->id)->with('products')->latest()->paginate(10);
+
+        return view('pages.transactions.index', compact('transactions'));
+    }
+
     public function show(Transaction $transaction)
     {
         if (Auth::id() !== $transaction->user_id) {
@@ -16,6 +25,6 @@ class TransactionController extends Controller
 
         $transaction->load('products', 'address');
 
-        return view('transaction', compact('transaction'));
+        return view('pages.transactions.show', compact('transaction'));
     }
 }

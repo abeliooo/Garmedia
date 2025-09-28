@@ -14,7 +14,7 @@ class PageController extends Controller
     {
         $recommendedBooks = Book::inRandomOrder()->take(15)->get();
         $affordableBooks = Book::where('price', '<=', 100000)->inRandomOrder()->take(15)->get();
-        
+
         $wishlistBookIds = [];
         if (Auth::check()) {
             $wishlistBookIds = Auth::user()->wishlistBooks()->pluck('book_id')->toArray();
@@ -45,7 +45,7 @@ class PageController extends Controller
     public function cart()
     {
         $cartItems = Auth::user()->cartItems()->get();
-        
+
         return view('pages.cartPage', compact('cartItems'));
     }
 
@@ -78,7 +78,7 @@ class PageController extends Controller
 
     public function products()
     {
-        $products = Book::latest()->get();
+        $products = Book::latest()->paginate(12);
 
         $wishlistBookIds = [];
         if (Auth::check()) {
@@ -104,5 +104,5 @@ class PageController extends Controller
             'book' => $book,
             'wishlistBookIds' => $wishlistBookIds
         ]);
-    }    
+    }
 }

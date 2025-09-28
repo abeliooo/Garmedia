@@ -41,7 +41,7 @@
                                 alt="{{ Auth::user()->name }}" width="32" height="32" class="rounded-circle">
                         </a>
                         <ul class="dropdown-menu text-small shadow">
-                            <li><a class="dropdown-item" href="{{ route('transaction.index') }}">Transaction</a></li>
+                            <li><a class="dropdown-item" href="{{ route('transactions.index') }}">Transaction</a></li>
                             <li><a class="dropdown-item" href="{{ route('account.index') }}">Account</a></li>
                             <li><a class="dropdown-item" href="{{ route('addresses.index') }}">Address</a></li>
                             <li>

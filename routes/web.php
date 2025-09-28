@@ -45,8 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/account/update-password', [AccountController::class, 'updatePassword'])->name('account.update.password');
     Route::post('/account/update-picture', [AccountController::class, 'updatePicture'])->name('account.update.picture');
     Route::get('/profile', [AccountController::class, 'showUserProfile'])->name('profile.show')->middleware('auth');
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transaction.index');
-    Route::get('/transaction/{transaction}', [TransactionController::class, 'show'])->name('transaction.show')->middleware('auth');
+    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
     Route::get('/address', [AddressController::class, 'index'])->name('addresses.index');
     Route::get('/address/create', [AddressController::class, 'create'])->name('addresses.create');
     Route::post('/address', [AddressController::class, 'store'])->name('addresses.store');

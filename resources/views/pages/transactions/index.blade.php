@@ -18,7 +18,7 @@
             <ul class="list-group list-group-flush">
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Total Pembayaran</span>
-                    <strong>Rp {{ number_format($transaction->total, 0, ',', '.') }}</strong>
+                    <strong>Rp {{ number_format($transaction->total_amount, 0, ',', '.') }}</strong>
                 </li>
                 <li class="list-group-item d-flex justify-content-between">
                     <span>Metode Pengiriman</span>

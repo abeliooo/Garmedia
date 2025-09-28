@@ -1,0 +1,16 @@
+.rating {
+        direction: ltr;
+    }
+
+    .rating input:checked ~ label {
+        color: #ffc107;
+    }
+
+    .rating label {
+        transition: color 0.2s;
+    }
+
+    .rating label:hover,
+    .rating label:hover ~ label {
+        color: #ffc107;
+    }

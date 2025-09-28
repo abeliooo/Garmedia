@@ -32,28 +32,38 @@ Route::get('/search', [SearchController::class, 'index'])->name('search');
 
 Route::middleware('auth')->group(function () {
     Route::get('/landing', [PageController::class, 'home'])->name('landing');
+
     Route::get('/wishlist', [PageController::class, 'wishlist'])->name('wishlist');
     Route::post('/wishlist/toggle/{book}', [WishlistController::class, 'toggleWishlist'])->name('wishlist.toggle');
+
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{book}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/cart/update/{book}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/cart/remove/{book}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index')->middleware('auth');
-    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process')->middleware('auth');
+
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout/process', [CheckoutController::class, 'process'])->name('checkout.process');
+
     Route::get('/account', [AccountController::class, 'index'])->name('account.index');
     Route::post('/account/update-field', [AccountController::class, 'updateField'])->name('account.update.field');
     Route::post('/account/update-password', [AccountController::class, 'updatePassword'])->name('account.update.password');
     Route::post('/account/update-picture', [AccountController::class, 'updatePicture'])->name('account.update.picture');
     Route::get('/profile', [AccountController::class, 'showUserProfile'])->name('profile.show')->middleware('auth');
+
     Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+    Route::post('/transactions', [TransactionController::class, 'store'])->name('transactions.store');
     Route::get('/transactions/{transaction}', [TransactionController::class, 'show'])->name('transactions.show');
+
     Route::get('/address', [AddressController::class, 'index'])->name('addresses.index');
     Route::get('/address/create', [AddressController::class, 'create'])->name('addresses.create');
     Route::post('/address', [AddressController::class, 'store'])->name('addresses.store');
     Route::get('/address/{address}/edit', [AddressController::class, 'edit'])->name('addresses.edit');
     Route::put('/address/{address}', [AddressController::class, 'update'])->name('addresses.update');
     Route::delete('/address/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
-    Route::get('/review', [PageController::class, 'review'])->name('review');
+
+    Route::get('/reviews', [App\Http\Controllers\ReviewController::class, 'index'])->name('review');
+
+    Route::post('/transactions/{transaction}/review', [App\Http\Controllers\ReviewController::class, 'store'])->name('transactions.review');
 });
 
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->name('admin.')->group(function () {

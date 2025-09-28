@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <h5 class="card-title mb-3">Alamat Pengiriman</h5>
                         @if($addresses->isEmpty())
-                        <p class="text-muted">Anda belum memiliki alamat tersimpan. <a href="#">Tambah Alamat</a></p>
+                        <p class="text-muted">Anda belum memiliki alamat tersimpan. <a href="/address">Tambah Alamat</a></p>
                         @else
                         @foreach($addresses as $address)
                         <div class="form-check">
@@ -79,7 +79,16 @@
                             <span>Total Akhir</span>
                             <span id="final-total">Rp {{ number_format($subtotal, 0, ',', '.') }}</span>
                         </div>
-                        <button type="submit" class="btn btn-dark w-100 mt-4 py-2">Checkout</button>
+                        <form action="{{ route('transactions.store') }}" method="POST">
+                            @csrf
+
+                            @foreach($cartItems as $item)
+                            <input type="hidden" name="items[{{ $item->id }}][quantity]" value="{{ $item->pivot->quantity }}">
+                            @endforeach
+
+                            <button type="submit" class="btn btn-dark w-100 mt-4 py-2">Checkout</button>
+                        </form>
+
                     </div>
                 </div>
             </div>

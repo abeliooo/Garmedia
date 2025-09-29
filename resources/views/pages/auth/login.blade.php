@@ -10,13 +10,13 @@
                 </div>
                 <div class="card-body p-4">
                     @if(session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
+                    <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
                     <form action="{{ route('login.submit') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="email">Email</label>
+                            <label for="email">Email (Do not use your real email, just use an @email.com)</label>
                             <input type="email" name="email" class="form-control" required>
                         </div>
 

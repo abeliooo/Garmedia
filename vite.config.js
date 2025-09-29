@@ -15,7 +15,7 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
-    base: process.env.ASSET_URL ? `${process.env.ASSET_URL}/build/` : '/build/',
+    base: '/',
     build: {
         outDir: 'public/build',
         emptyOutDir: true,
